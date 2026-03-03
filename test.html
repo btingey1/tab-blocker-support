@@ -48,7 +48,8 @@
             line-height: 1.5;
             margin-bottom: 14px;
         }
-        button {
+        a.test-link {
+            display: block;
             background: #4ade80;
             color: #000;
             border: none;
@@ -57,29 +58,10 @@
             width: 100%;
             font-size: 14px;
             font-weight: 600;
-            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
         }
-        button:active { opacity: 0.8; }
-        .result {
-            margin-top: 12px;
-            padding: 10px 14px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 500;
-            display: none;
-        }
-        .result.blocked {
-            display: block;
-            background: rgba(74,222,128,0.1);
-            color: #4ade80;
-            border: 1px solid rgba(74,222,128,0.3);
-        }
-        .result.allowed {
-            display: block;
-            background: rgba(239,68,68,0.1);
-            color: #ef4444;
-            border: 1px solid rgba(239,68,68,0.3);
-        }
+        a.test-link:active { opacity: 0.8; }
         .steps {
             max-width: 400px;
             width: 100%;
@@ -109,17 +91,9 @@
     <p class="subtitle">Use this page to verify that Tab Blocker<br>is blocking unwanted new tabs.</p>
 
     <div class="card">
-        <h2>Test: Open a New Tab</h2>
-        <p>Tap the button below. It will attempt to open a new tab via JavaScript. If Tab Blocker is enabled for this site, the new tab will be blocked.</p>
-        <button id="testBtn" onclick="runTest()">Try to Open New Tab</button>
-        <div id="result" class="result"></div>
-    </div>
-
-    <div class="card">
-        <h2>Test: Auto Pop-up</h2>
-        <p>This simulates an ad-style pop-up that opens automatically. Tap the button to trigger it after a 2-second delay.</p>
-        <button id="delayBtn" onclick="runDelayTest()">Trigger Delayed Pop-up</button>
-        <div id="delayResult" class="result"></div>
+        <h2>Open a New Tab</h2>
+        <p>Tap the link below. Without Tab Blocker, a new tab will open. With Tab Blocker enabled on this site, the new tab will be blocked.</p>
+        <a class="test-link" href="https://example.com" target="_blank" rel="noopener">Open New Tab</a>
     </div>
 
     <div class="steps">
@@ -127,45 +101,8 @@
         <div class="step">1. Open the <strong>Tab Blocker</strong> app and follow the setup steps</div>
         <div class="step">2. In Safari, tap the <strong>extensions icon</strong> (puzzle piece) on this page</div>
         <div class="step">3. Tap <strong>Tab Blocker</strong> and enable it for this site</div>
-        <div class="step">4. <strong>Reload this page</strong>, then tap the test buttons above</div>
-        <div class="step">5. If blocked, the new tab will not open and a green confirmation appears</div>
+        <div class="step">4. <strong>Reload this page</strong>, then tap the link above</div>
+        <div class="step">5. The new tab should be blocked from opening</div>
     </div>
-
-    <script>
-        function runTest() {
-            var result = document.getElementById('result');
-            var w = window.open('about:blank', '_blank');
-            if (!w || w.closed || typeof w.closed === 'undefined') {
-                result.className = 'result blocked';
-                result.textContent = 'Blocked — Tab Blocker prevented the new tab from opening.';
-            } else {
-                result.className = 'result allowed';
-                result.textContent = 'Not blocked — The new tab was allowed to open. Make sure Tab Blocker is enabled for this site and reload the page.';
-                w.close();
-            }
-        }
-
-        function runDelayTest() {
-            var btn = document.getElementById('delayBtn');
-            var result = document.getElementById('delayResult');
-            btn.textContent = 'Opening in 2s\u2026';
-            btn.disabled = true;
-            result.style.display = 'none';
-
-            setTimeout(function() {
-                var w = window.open('about:blank', '_blank');
-                if (!w || w.closed || typeof w.closed === 'undefined') {
-                    result.className = 'result blocked';
-                    result.textContent = 'Blocked — Tab Blocker prevented the delayed pop-up.';
-                } else {
-                    result.className = 'result allowed';
-                    result.textContent = 'Not blocked — The pop-up was allowed. Make sure Tab Blocker is enabled for this site and reload the page.';
-                    w.close();
-                }
-                btn.textContent = 'Trigger Delayed Pop-up';
-                btn.disabled = false;
-            }, 2000);
-        }
-    </script>
 </body>
 </html>
